@@ -1,0 +1,8 @@
+{
+    "llm.aad_api_resource": "api://feb7b661-cac7-44a8-8dc1-163b63c23df2",
+    "llm.aad_api_scope": "openai",
+    "llm.aad_auth_mode": "device_login",
+    "llm.aad_tenant_id": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "llm.api_base": "https://cloudgpt-openai.azure-api.net",
+    "llm.api_type": "azure_ad"
+}
