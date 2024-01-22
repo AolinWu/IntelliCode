@@ -1,4 +1,5 @@
 import abc
+import logging
 import os.path
 from abc import abstractmethod
 from typing import Dict, List, Any, Optional
@@ -8,6 +9,7 @@ import yaml
 from Agents.Agent import Agent
 from collections import deque
 
+from llm import PROJECT_DIR
 from llm.api import LLMApi
 
 
@@ -113,21 +115,35 @@ class MessageQueue:
             return None
         return self.msg_queue.popleft()
 
-class FormatChecker(metaclass=abc.ABCMeta):
-    """
-    check the LLM's response format and collect related format issues and feedback to LLM,then let LLM correct the format issue progressively
-    """
-    def __init__(self,api:LLMApi):
-        self.issues:List[str]=list[str]()
-    @abstractmethod
-    def format_check(self,response:str)->bool:
-        """
-        :param response: need to be checked response
-        :return: true if format is right,false if format is wrong
-        """
-        ...
-    def format_revise(self):
 
+class Logger:
+    def __init__(self, log_file: str = None, record_level: int = logging.DEBUG, format: str = None):
+        self.format = format
+        if format is None:
+            self.format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s-%(funcName)s'
+        self.log_dir = os.path.join(PROJECT_DIR, 'workingspace', 'log')
+        if log_file is None:
+            self.log_file = 'log.txt'
+            if not os.path.exists(self.log_dir):
+                os.makedirs(self.log_dir, mode=0o777)
+            self.log_file = os.path.join(self.log_dir, self.log_file)
+        self.record_level = record_level
+        logging.basicConfig(filename=self.log_file, format=self.format, level=self.record_level)
+
+    def info(self, msg):
+        logging.info(msg)
+
+    def debug(self, msg):
+        logging.debug(msg)
+
+    def warning(self, msg):
+        logging.warning(msg)
+
+    def error(self, msg):
+        logging.error(msg)
+
+    def fatal(self, msg):
+        logging.critical(msg)
 
 
 class YamlPromptReader:

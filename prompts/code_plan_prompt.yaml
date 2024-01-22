@@ -1,13 +1,17 @@
-system_msg: You are a python project designer.Your task is to design python project according to project description.Notice that you should design the project step by step and follow Object-Oriented-Programming design style.
+system_msg:
+  You are a python project designer.Your task is to design python project according to project description.Notice that you should design the project step by step and follow Object-Oriented-Programming design style.
 prompt_templates:
-      task_desc_template: {project_desc}.Write your project design step by step.Your answer should be consistent with following restriction.
+      task_desc_template:
+                            {project_desc}.Write your project design step by step.Your answer should be consistent with following restriction.
                             (1)、You should only describe one class or one function's design in one step.
-                            (2)、Your answer should be 'Step {step number}:Create a class called {class name}.This class will be responsible for {class description}.' or 'Step {step number}:Create a function called {function name}.This function will be responsible for {function description}.'
+                            (2)、Your answer should be 'Step {step_number}:Create a class called {class_name}.This class will be responsible for {class_description}.' or 'Step {step_number}:Create a function called {function_name}.This function will be responsible for {function_description}.'
 examples:
-      - Q: I want to write one python project can play gomoku chess.Write your project design step by step.Your answer should be consistent with following restriction.
+      - Q:
+          I want to write one python project can play gomoku chess.Write your project design step by step.Your answer should be consistent with following restriction.
          (1)、You should only describe one class or one function's design in one step.
-         (2)、Your answer should be 'Step {step number}:Create a class called {class name}.{class description}.' or 'Step {step number}:Create a function called {function name}.{function description}.'
-        A: Step 1:Create a class called GomokuBoard. This class will be responsible for keeping track of the board state and providing methods for updating the board state.
+         (2)、Your answer should be 'Step {step_number}:Create a class called {class_name}.This class will be responsible for {class_description}.' or 'Step {step_number}:Create a function called {function_name}.This function will be responsible for {function_description}.'
+        A:
+         Step 1:Create a class called GomokuBoard. This class will be responsible for keeping track of the board state and providing methods for updating the board state.
          Step 2:Create a class called Player. This class will be responsible for keeping track of the player's state and providing methods for making moves.
          Step 3:Create a class called Game. This class will be responsible for managing the game and providing methods for starting and ending the game.
          Step 4:Create a class called AI. This class will be responsible for providing methods for making moves based on a set of rules.

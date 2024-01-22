@@ -1,0 +1,3 @@
+code_plan_format_spec:
+  - Step {step_number}:Create a class called {class_name}.This class will be responsible for {class_description}.
+  - Step {step_number}:Create a function called {function_name}.This function will be responsible for {function_description}.
