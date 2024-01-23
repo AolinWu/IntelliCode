@@ -150,7 +150,6 @@ class YamlPromptReader:
     @staticmethod
     def readPrompt(path: str, encoding: str = 'utf-8'):
         assert os.path.exists(path), f'{path} does not exits'
-        result = None
         with open(path, 'r', encoding=encoding) as f:
             result = yaml.load(f.read(), Loader=yaml.FullLoader)
         return result
