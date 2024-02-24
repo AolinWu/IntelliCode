@@ -12,6 +12,10 @@ from collections import deque
 from llm import PROJECT_DIR
 from llm.api import LLMApi
 
+import re
+
+from utils.DependencyGraph import CodeEntity, CodeEntityType
+
 
 class QAExample:
     @staticmethod
@@ -146,10 +150,39 @@ class Logger:
         logging.critical(msg)
 
 
-class YamlPromptReader:
+class YamlReader:
     @staticmethod
-    def readPrompt(path: str, encoding: str = 'utf-8'):
+    def read(path: str, encoding: str = 'utf-8'):
         assert os.path.exists(path), f'{path} does not exits'
         with open(path, 'r', encoding=encoding) as f:
             result = yaml.load(f.read(), Loader=yaml.FullLoader)
         return result
+
+
+class ContentExtractor:
+    STEP_PATTERN = re.compile(r'Step\s+\d\s*:\s*Create a (\w+) called (\w+).This class will be responsible for (\w+)',
+                              re.I)
+
+    @staticmethod
+    def _get_code_entity_type(entity_type: str) -> Optional[CodeEntityType]:
+        lower_entity_type = entity_type.lower()
+        if lower_entity_type == 'package':
+            return CodeEntityType.Package
+        elif lower_entity_type == 'class':
+            return CodeEntityType.Class
+        elif lower_entity_type == 'function':
+            return CodeEntityType.Function
+        raise Exception(f'unsupported code entity type:{entity_type}')
+
+    @staticmethod
+    def extract_code_entity_from_step(step: str):
+        step = step.strip()
+        obj = re.match(ContentExtractor.STEP_PATTERN, step)
+        assert (obj is not None
+                and obj.group(1) is not None
+                and obj.group(2) is not None
+                and obj.group(3) is not None), f'{step} has format error'
+        entity_type = ContentExtractor._get_code_entity_type(obj.group(1))
+        return CodeEntity(entity_type=entity_type, code_definition=obj.group(2), code_desc=obj.group(3))
+
+

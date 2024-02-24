@@ -7,6 +7,7 @@ from openai import AzureOpenAI, OpenAI
 from langchain.embeddings import OpenAIEmbeddings, AzureOpenAIEmbeddings
 from llm.config import LLMModuleConfig, ModuleConfig, ConfigSource
 from llm import PROJECT_DIR
+from abc import abstractmethod, ABCMeta
 
 ChatMessageRoleType = Literal["system", "user", "assistant"]
 ChatMessageType = Dict[Literal["role", "name", "content"], str]
@@ -33,7 +34,20 @@ DEFAULT_STOP_TOKEN: List[str] = ["<EOS>"]
 _FuncType = TypeVar("_FuncType", bound=Callable[..., Any])
 
 
-class LLMApi(object):
+class Api(metaclass=ABCMeta):
+    """
+    All LLM、different chat ways must implemented this class like Llama,ChatGLM
+    """
+    @abstractmethod
+    def __init__(self, config: ModuleConfig):
+        ...
+
+    @abstractmethod
+    def chat_completion(self, **kwargs):
+        ...
+
+
+class LLMApi(Api):
     import torch
     EMBEDDING_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 

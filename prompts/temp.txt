@@ -1,4 +1,4 @@
- I want to write one python project can play gomoku chess.
+I want to write one python project can play gomoku chess.
 Create a class called GomokuBoard. This class will be responsible for keeping track of the board state and providing methods for updating the board state.
 You should explain each function's input params and return params and functinality below the function definition.
 ```python
