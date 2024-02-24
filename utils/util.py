@@ -175,7 +175,7 @@ class ContentExtractor:
         raise Exception(f'unsupported code entity type:{entity_type}')
 
     @staticmethod
-    def extract_code_entity_from_step(step: str):
+    def extract_code_entity_from_step(step: str, parent_code_entity: CodeEntity = None):
         step = step.strip()
         obj = re.match(ContentExtractor.STEP_PATTERN, step)
         assert (obj is not None
@@ -183,6 +183,5 @@ class ContentExtractor:
                 and obj.group(2) is not None
                 and obj.group(3) is not None), f'{step} has format error'
         entity_type = ContentExtractor._get_code_entity_type(obj.group(1))
-        return CodeEntity(entity_type=entity_type, code_definition=obj.group(2), code_desc=obj.group(3))
-
-
+        return CodeEntity(entity_type=entity_type, entity_name=obj.group(2), code_desc=obj.group(3),
+                          parent_code_entity=parent_code_entity)
