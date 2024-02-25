@@ -5,6 +5,7 @@ from abc import abstractmethod
 from typing import Dict, List, Any, Optional
 
 import yaml
+from injector import singleton
 
 from Agents.Agent import Agent
 from collections import deque
@@ -120,6 +121,7 @@ class MessageQueue:
         return self.msg_queue.popleft()
 
 
+@singleton
 class Logger:
     def __init__(self, log_file: str = None, record_level: int = logging.DEBUG, format: str = None):
         self.format = format
